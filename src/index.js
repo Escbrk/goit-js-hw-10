@@ -1,10 +1,8 @@
 import axios from 'axios';
+import '../node_modules/modern-normalize/modern-normalize.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SlimSelect from 'slim-select';
-
-// new SlimSelect({
-//   select: '#selectElement',
-// });
+// import fetchCatByBreed from './cat-api';
 
 const refs = {
   breedSelect: document.querySelector('.breed-select'),
@@ -16,11 +14,12 @@ axios.defaults.headers.common['x-api-key'] =
 axios.defaults.baseURL = 'https://api.thecatapi.com/v1';
 
 async function fetchBreeds() {
-  const data = await axios
+  return (data = await axios
     .get('/breeds')
     .then(resp => resp.data.map(data => data))
-    .catch(err => console.error(err));
-  return data;
+    .catch(err => {
+      console.error(err);
+    }));
 }
 
 // Create options markup -->
@@ -33,13 +32,38 @@ fetchBreeds().then(data =>
   )
 );
 
+function fetchCatByBreed(breedId) {
+  return (data = axios
+    .get('/images/search', {
+      params: {
+        breed_ids: breedId,
+      },
+    })
+    .then(resp => (refs.catInfo.innerHTML = createMarkup(resp)))
+    .catch(err => {
+      Notify.failure('Oops! Something went wrong! Try reloading the page!');
+      refs.catInfo.innerHTML = '';
+    }));
+}
 
-// function fetchCatByBreed(breedId) {
-
-//   }
-
-refs.breedSelect.addEventListener('change', onSelect)
+refs.breedSelect.addEventListener('change', onSelect);
 
 function onSelect() {
-    console.log(refs.breedSelect.value)
+  refs.catInfo.innerHTML = '<span class="loader"></span>';
+  fetchCatByBreed(refs.breedSelect.value);
+}
+
+function createMarkup(arr) {
+  return arr.data.map(
+    ({ breeds: [{ name, temperament, description }], url }) => {
+      return `
+      <img src="${url}" alt="${name}">
+<div class='text-container'>
+        <h1>${name}</h1>
+        <p>${description}</p>
+        <span><b>Temperament: </b>${temperament}</span>
+</div>
+    `;
+    }
+  );
 }
