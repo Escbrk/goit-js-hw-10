@@ -1,4 +1,5 @@
 import '../node_modules/modern-normalize/modern-normalize.css';
+import './css/style.css'
 import { fetchBreeds, fetchCatByBreed } from './cat-api'
 
 
