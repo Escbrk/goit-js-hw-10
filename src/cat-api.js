@@ -8,18 +8,18 @@ axios.defaults.headers.common['x-api-key'] =
 axios.defaults.baseURL = 'https://api.thecatapi.com/v1';
 
 async function fetchBreeds() {
-  return (data = await axios
+  return data = await axios
     .get('/breeds')
     .then(resp => resp.data.map(data => data))
     .catch(err => {
       console.error(err);
       Notify.failure('Oops! Something went wrong! Try reloading the page!');
       refs.catInfo.innerHTML = '';
-    }));
+    })
 }
 
 async function fetchCatByBreed(breedId) {
-  return (data = await axios
+  return data = await axios
     .get('/images/search', {
       params: {
         breed_ids: breedId,
@@ -30,7 +30,7 @@ async function fetchCatByBreed(breedId) {
       console.error(err);
       Notify.failure('Oops! Something went wrong! Try reloading the page!');
       refs.catInfo.innerHTML = '';
-    }));
+    })
 }
 
 export { fetchBreeds, fetchCatByBreed };
