@@ -9,8 +9,7 @@ const refs = {
   catInfo: document.querySelector('.cat-info'),
 };
 
-axios.defaults.headers.common['x-api-key'] =
-  'live_zFksffvjV5C1VI3jqdVkoP6lGz4eQnTFRekdHtefmwojLFX28yJABEnBPGHJIB1T';
+axios.defaults.headers.common['x-api-key'] = 'live_zFksffvjV5C1VI3jqdVkoP6lGz4eQnTFRekdHtefmwojLFX28yJABEnBPGHJIB1T';
 axios.defaults.baseURL = 'https://api.thecatapi.com/v1';
 
 async function fetchBreeds() {
